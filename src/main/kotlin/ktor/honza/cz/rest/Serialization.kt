@@ -9,12 +9,21 @@ import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
 import java.util.*
 
 fun Application.installRouting() {
   install(Resources)
   install(ContentNegotiation) {
-    json()
+    json(json = Json {
+      ignoreUnknownKeys = true
+      encodeDefaults = true
+      isLenient = true
+      allowSpecialFloatingPointValues = true
+      allowStructuredMapKeys = true
+      prettyPrint = false
+      useArrayPolymorphism = false
+    })
   }
 }
 

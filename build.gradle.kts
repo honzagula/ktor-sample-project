@@ -24,17 +24,23 @@ repositories {
 }
 
 dependencies {
-  // core
+  // server
   implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
   implementation("io.ktor:ktor-server-resources-jvm:$ktor_version")
   implementation("io.ktor:ktor-server-cio-jvm:$ktor_version")
   implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
   implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
+  // client
+  implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
+  implementation("io.ktor:ktor-client-cio-jvm:$ktor_version")
+
   // serialization
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
   // logging
+  val kotlinLoggingVersion = "2.1.23"
+  implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
   implementation("ch.qos.logback:logback-classic:$logback_version")
 
   // DI
@@ -44,4 +50,10 @@ dependencies {
 
   testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
+
+tasks {
+  withType<Test> {
+    useJUnitPlatform()
+  }
 }
