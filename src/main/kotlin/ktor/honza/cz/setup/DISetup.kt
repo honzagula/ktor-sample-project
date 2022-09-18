@@ -1,9 +1,7 @@
 package ktor.honza.cz.setup
 
-import kotlinx.nosql.CreateDrop
-import kotlinx.nosql.mongodb.MongoDB
 import ktor.honza.cz.client.AuthorClient
-import ktor.honza.cz.domain.Books
+import ktor.honza.cz.dao.BookDao
 import ktor.honza.cz.enums.EnvVariables
 import ktor.honza.cz.extensions.getEnv
 import ktor.honza.cz.extensions.whenNull
@@ -15,6 +13,9 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
+import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.coroutine.coroutine
+import org.litote.kmongo.reactivestreams.KMongo
 
 private val log = logger {}
 
@@ -28,16 +29,20 @@ fun DI.MainBuilder.registerProperties() {
 }
 
 fun DI.MainBuilder.registerDatabase() {
-  bind<MongoDB>() with singleton { MongoDB(database = "localhost", schemas = arrayOf(Books), action = CreateDrop()) }
+  bind<CoroutineDatabase>() with singleton { KMongo.createClient().coroutine.getDatabase("ktor-library") }
 }
 
 fun DI.MainBuilder.registerClients() {
   bind<AuthorClient>() with singleton { AuthorClient(instance()) }
 }
 
+fun DI.MainBuilder.registerDAOs() {
+  bind<BookDao>() with singleton { BookDao(instance()) }
+}
+
 fun DI.MainBuilder.registerServices() {
   bind<AuthorService>() with singleton { AuthorService(instance()) }
-  bind<BookService>() with singleton { BookService(db = instance(), authorService = instance()) }
+  bind<BookService>() with singleton { BookService(bookDao = instance(), authorService = instance()) }
 }
 
 private fun getEnvOrLogDefault(env: EnvVariables, defaultValue: String) =

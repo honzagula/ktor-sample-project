@@ -14,6 +14,7 @@ fun main() {
       registerProperties()
       registerDatabase()
       registerClients()
+      registerDAOs()
       registerServices()
     }
 

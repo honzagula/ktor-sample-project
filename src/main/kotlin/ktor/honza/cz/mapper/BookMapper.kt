@@ -15,18 +15,16 @@ fun BookAddRequest.toCommand() = BookAddCommand(
     releasedAt = releasedAt,
 )
 
-fun BookAddCommand.toDomain() = Book(
-    id = UUID.randomUUID(),
+fun BookAddCommand.toDomain(authorName: String) = Book(
     title = title,
     authorId = authorId,
-    releasedAt = Date.from(releasedAt.atStartOfDay(ZoneId.of("UTC")).toInstant()),
+    authorName = authorName,
+    releasedAt = releasedAt,
 )
 
 fun Book.toResponse() = BookResponse(
     id = id,
     title = title,
     authorId = authorId,
-    releasedAt = Instant.ofEpochMilli(releasedAt.time)
-        .atZone(ZoneId.of("UTC"))
-        .toLocalDate()
+    releasedAt = releasedAt
 )

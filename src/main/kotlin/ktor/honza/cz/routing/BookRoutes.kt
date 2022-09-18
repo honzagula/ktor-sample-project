@@ -26,10 +26,15 @@ fun Application.registerBookRoutes() {
         call.respond(BookResponse(id = request.id, title = "Kniha", authorId = UUID.randomUUID(), releasedAt = LocalDate.MIN))
       }
 
+    get<BookResource> {
+      bookService.findAllBooks().map { it.toResponse() }
+          .let { call.respond(it) }
+    }
+
     post<BookResource> {
       withRequest<BookAddRequest> { request ->
         request.toCommand()
-            .run(bookService::addBook)
+            .run { bookService.addBook(this) }
             .toResponse()
             .let { call.respond(it) }
       }

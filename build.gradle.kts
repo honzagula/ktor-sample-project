@@ -49,8 +49,8 @@ dependencies {
   implementation("org.kodein.di", "kodein-di-framework-ktor-server-jvm", kodeinVersion)
 
   // MongoDB
-  val mongoDBVersion = "0.1-SNAPSHOT"
-  implementation("org.jetbrains.kotlin:kotlin-nosql-mongodb:$mongoDBVersion")
+  val kmongoVersion = "4.7.1"
+  implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
 
   testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

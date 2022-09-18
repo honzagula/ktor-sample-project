@@ -17,7 +17,9 @@ fun AuthorDetailClientResponse.toDomain() = Author(
 
 fun Author.toResponse() = AuthorResponse(
     id = id,
-    fullName = middleName?.let { "$firstName $middleName $lastName" } ?: "$firstName $lastName",
+    fullName = fullName(),
     dateOfBirth = birth,
     country = country
 )
+
+fun Author.fullName() = middleName?.let { "$firstName $middleName $lastName" } ?: "$firstName $lastName"
