@@ -1,10 +1,14 @@
 package ktor.honza.cz.setup
 
+import kotlinx.nosql.CreateDrop
+import kotlinx.nosql.mongodb.MongoDB
 import ktor.honza.cz.client.AuthorClient
+import ktor.honza.cz.domain.Books
 import ktor.honza.cz.enums.EnvVariables
 import ktor.honza.cz.extensions.getEnv
 import ktor.honza.cz.extensions.whenNull
 import ktor.honza.cz.service.AuthorService
+import ktor.honza.cz.service.BookService
 import ktor.honza.cz.setup.properties.ClientProperties
 import mu.KotlinLogging.logger
 import org.kodein.di.DI
@@ -23,12 +27,17 @@ fun DI.MainBuilder.registerProperties() {
   }
 }
 
+fun DI.MainBuilder.registerDatabase() {
+  bind<MongoDB>() with singleton { MongoDB(database = "localhost", schemas = arrayOf(Books), action = CreateDrop()) }
+}
+
 fun DI.MainBuilder.registerClients() {
   bind<AuthorClient>() with singleton { AuthorClient(instance()) }
 }
 
 fun DI.MainBuilder.registerServices() {
   bind<AuthorService>() with singleton { AuthorService(instance()) }
+  bind<BookService>() with singleton { BookService(db = instance(), authorService = instance()) }
 }
 
 private fun getEnvOrLogDefault(env: EnvVariables, defaultValue: String) =

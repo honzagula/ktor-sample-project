@@ -10,6 +10,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
+import java.time.LocalDate
 import java.util.*
 
 fun Application.installRouting() {
@@ -35,6 +36,18 @@ object UUIDSerializer : KSerializer<UUID> {
   }
 
   override fun serialize(encoder: Encoder, value: UUID) {
+    encoder.encodeString(value.toString())
+  }
+}
+
+object LocalDateSerializer : KSerializer<LocalDate> {
+  override val descriptor = PrimitiveSerialDescriptor("LocalDate", PrimitiveKind.STRING)
+
+  override fun deserialize(decoder: Decoder): LocalDate {
+    return LocalDate.parse(decoder.decodeString())
+  }
+
+  override fun serialize(encoder: Encoder, value: LocalDate) {
     encoder.encodeString(value.toString())
   }
 }

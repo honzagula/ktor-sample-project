@@ -20,7 +20,7 @@ application {
 
 repositories {
   mavenCentral()
-  maven("https://jitpack.io")
+  maven("https://repository.jetbrains.com/kotlin-nosql")
 }
 
 dependencies {
@@ -47,6 +47,10 @@ dependencies {
   val kodeinVersion = "7.14.0"
   implementation("org.kodein.di", "kodein-di-jvm", kodeinVersion)
   implementation("org.kodein.di", "kodein-di-framework-ktor-server-jvm", kodeinVersion)
+
+  // MongoDB
+  val mongoDBVersion = "0.1-SNAPSHOT"
+  implementation("org.jetbrains.kotlin:kotlin-nosql-mongodb:$mongoDBVersion")
 
   testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

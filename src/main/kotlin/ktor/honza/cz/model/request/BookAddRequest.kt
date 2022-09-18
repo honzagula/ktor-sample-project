@@ -1,14 +1,16 @@
 package ktor.honza.cz.model.request
 
-import io.ktor.resources.*
 import kotlinx.serialization.Serializable
+import ktor.honza.cz.rest.LocalDateSerializer
 import ktor.honza.cz.rest.UUIDSerializer
+import java.time.LocalDate
 import java.util.UUID
 
 @Serializable
-@Resource("/create")
-data class BookCreateRequest(
+data class BookAddRequest(
     val title: String = "",
     @Serializable(with = UUIDSerializer::class)
-    val authorId: UUID = UUID.randomUUID()
+    val authorId: UUID = UUID.randomUUID(),
+    @Serializable(LocalDateSerializer::class)
+    val releasedAt: LocalDate,
 )

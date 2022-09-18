@@ -5,7 +5,7 @@ import ktor.honza.cz.domain.Author
 import ktor.honza.cz.model.response.AuthorResponse
 
 
-fun AuthorDetailClientResponse.mapToDomain() = Author(
+fun AuthorDetailClientResponse.toDomain() = Author(
     id = id,
     firstName = firstName,
     middleName = middleName,
@@ -15,7 +15,7 @@ fun AuthorDetailClientResponse.mapToDomain() = Author(
     description = description,
 )
 
-fun Author.mapToResponse() = AuthorResponse(
+fun Author.toResponse() = AuthorResponse(
     id = id,
     fullName = middleName?.let { "$firstName $middleName $lastName" } ?: "$firstName $lastName",
     dateOfBirth = birth,

@@ -4,7 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ktor.honza.cz.domain.Author
-import ktor.honza.cz.mapper.mapToResponse
+import ktor.honza.cz.mapper.toResponse
 import ktor.honza.cz.service.AuthorService
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
@@ -19,14 +19,14 @@ fun Application.registerAuthorRoutes() {
     route(authorRoute) {
       get {
         authorService.getAuthors()
-            .map(Author::mapToResponse)
+            .map(Author::toResponse)
             .let { call.respond(it) }
       }
 
       get("/{id}") {
         call.parameters["id"].let(UUID::fromString)
             .run { authorService.getAuthorByID(this) }
-            .mapToResponse()
+            .toResponse()
             .let { call.respond(it) }
       }
     }
